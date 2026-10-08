@@ -51,3 +51,66 @@ class Customer():
             f"Телефон: {self.phone}\n"
             f"Баланс: {self.balance} грн\n"
         )
+
+class Cart():
+    def __init__(self, cart_id, customer, products, total_price, status, creation_date):
+        self.cart_id = cart_id
+        self.customer = customer
+        self.products = products
+        self.total_price = total_price
+        self.status = status
+        self.creation_date = creation_date
+
+    def add_product(self, product):
+        self.products.append(product)
+        self.total_price += product.price
+        print(f"Товар '{product.name}' додано до кошика")
+
+    def remove_product(self, product):
+        if product in self.products:
+            self.products.remove(product)
+            self.total_price -= product.price
+            print(f"Товар '{product.name}' видалено з кошика")
+        else:
+            print(f"Товару '{product.name}' немає в кошику")
+
+    def show_cart(self):
+        print(f"\nКошик №{self.cart_id}")
+        print(f"Клієнт: {self.customer.name} {self.customer.surname}")
+        print("Товари:")
+
+        for product in self.products:
+            print(f"- {product.name}: {product.price} грн")
+
+        print(f"Загальна сума: {self.total_price} грн")
+
+
+class Order():
+    def __init__(self, order_id, customer, products, total_price, status, order_date):
+        self.order_id = order_id
+        self.customer = customer
+        self.products = products
+        self.total_price = total_price
+        self.status = status
+        self.order_date = order_date
+
+    def calculate_total(self):
+        self.total_price = 0
+
+        for product in self.products:
+            self.total_price += product.price
+
+        return self.total_price
+
+    def change_status(self, new_status):
+        self.status = new_status
+        print(f"Статус замовлення змінено на: {new_status}")
+
+    def show_order(self):
+        print(
+            f"\nЗамовлення №{self.order_id} \n"
+            f"Клієнт: {self.customer.name} {self.customer.surname} \n"
+            f"Сума: {self.total_price} грн \n"
+            f"Статус: {self.status} \n"
+            f"Дата: {self.order_date} \n"
+        )
