@@ -171,3 +171,99 @@ class Delivery():
             f"Ціна: {self.price} грн \n"
             f"Статус: {self.status} \n"
         )
+product1 = Product(
+    "Ноутбук Lenovo",
+    25000,
+    "Електроніка",
+    5,
+    101,
+    "Lenovo"
+)
+
+product2 = Product(
+    "Мишка Logitech",
+    800,
+    "Комп'ютерні аксесуари",
+    20,
+    102,
+    "Logitech"
+)
+
+
+customer1 = Customer(
+    "Іван",
+    "Ткач",
+    "ivantkach@gmail.com",
+    "+380971112233",
+    "м. Вінниця, вул. Політехнічна, 5",
+    30000
+)
+
+
+cart1 = Cart(
+    1,
+    customer1,
+    [],
+    0,
+    "Активний",
+    "07.10.2026"
+)
+
+cart1.add_product(product1)
+cart1.add_product(product2)
+
+cart1.show_cart()
+
+
+order1 = Order(
+    1,
+    customer1,
+    cart1.products,
+    0,
+    "Створено",
+    "08.10.2026"
+)
+
+order1.calculate_total()
+order1.show_order()
+
+
+payment1 = Payment(
+    1,
+    order1,
+    order1.total_price,
+    "Банківська картка",
+    "Очікує оплати",
+    "08.10.2026"
+)
+
+payment1.pay()
+payment1.show_payment()
+
+
+delivery1 = Delivery(
+    1,
+    order1,
+    customer1.address,
+    "Нова Пошта",
+    100,
+    "Підготовка"
+)
+
+delivery1.show_delivery()
+
+delivery1.start_delivery()
+delivery1.show_delivery()
+
+order1.change_status("Відправлено")
+
+delivery1.complete_delivery()
+
+print("- Товари -")
+
+product1.show_info()
+product2.show_info()
+
+print("- Клієнт -")
+
+customer1.show_info()
