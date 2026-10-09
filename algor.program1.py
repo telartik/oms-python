@@ -115,7 +115,7 @@ class Order():
             f"Дата: {self.order_date} \n"
         )
 
-        
+
 class Payment():
     def __init__(self, payment_id, order, amount, method, status, date):
         self.payment_id = payment_id
@@ -144,4 +144,30 @@ class Payment():
             f"Сума: {self.amount} грн \n"
             f"Метод: {self.method} \n"
             f"Статус: {self.status}"
+        )
+
+class Delivery():
+    def __init__(self, delivery_id, order, address, courier, price, status):
+        self.delivery_id = delivery_id
+        self.order = order
+        self.address = address
+        self.courier = courier
+        self.price = price
+        self.status = status
+
+    def start_delivery(self):
+        self.status = "В дорозі"
+        print(f"Замовлення №{self.order.order_id} передано кур'єру")
+
+    def complete_delivery(self):
+        self.status = "Доставлено"
+        print(f"Замовлення №{self.order.order_id} доставлено \n")
+
+    def show_delivery(self):
+        print(
+            f"\nДоставка №{self.delivery_id} \n"
+            f"Адреса: {self.address} \n"
+            f"Кур'єр: {self.courier} \n"
+            f"Ціна: {self.price} грн \n"
+            f"Статус: {self.status} \n"
         )
