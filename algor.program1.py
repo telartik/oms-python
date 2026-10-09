@@ -114,3 +114,34 @@ class Order():
             f"Статус: {self.status} \n"
             f"Дата: {self.order_date} \n"
         )
+
+        
+class Payment():
+    def __init__(self, payment_id, order, amount, method, status, date):
+        self.payment_id = payment_id
+        self.order = order
+        self.amount = amount
+        self.method = method
+        self.status = status
+        self.date = date
+
+    def pay(self):
+        if self.order.customer.balance >= self.amount:
+            self.order.customer.balance -= self.amount
+            self.status = "Оплачено"
+            print(f"Замовлення №{self.order.order_id} успішно оплачено")
+        else:
+            self.status = "Не оплачено"
+            print("Недостатньо коштів для оплати")
+
+    def cancel_payment(self):
+        self.status = "Скасовано"
+        print("Оплату скасовано")
+
+    def show_payment(self):
+        print(
+            f"\nОплата №{self.payment_id} \n"
+            f"Сума: {self.amount} грн \n"
+            f"Метод: {self.method} \n"
+            f"Статус: {self.status}"
+        )
