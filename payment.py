@@ -24,7 +24,6 @@ class Payment:
             f"Статус: {self.status}"
         )
 
-# Похідний клас для ООП (Успадкування)
 class CardPayment(Payment):
     def __init__(self, payment_id: int, order: Order, amount: float):
         super().__init__(payment_id, order, amount, method="Банківська картка")
