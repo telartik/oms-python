@@ -26,6 +26,5 @@ class Payment:
 
 
 class CardPayment(Payment):
-    """Принцип успадкування ООП: спеціалізований платіж карткою"""
     def __init__(self, payment_id: int, order: Order, amount: float):
         super().__init__(payment_id, order, amount, method="Банківська картка")
