@@ -16,14 +16,16 @@ class Payment:
             self.status = "Не оплачено"
             print("Недостатньо коштів для оплати")
 
-    def show_payment(self):
-        print(
-            f"\nОплата №{self.payment_id} \n"
-            f"Сума: {self.amount} грн \n"
-            f"Метод: {self.method} \n"
+    def __str__(self) -> str:
+        return (
+            f"\nОплата №{self.payment_id}\n"
+            f"Сума: {self.amount} грн\n"
+            f"Метод: {self.method}\n"
             f"Статус: {self.status}"
         )
 
+
 class CardPayment(Payment):
+    """Принцип успадкування ООП: спеціалізований платіж карткою"""
     def __init__(self, payment_id: int, order: Order, amount: float):
         super().__init__(payment_id, order, amount, method="Банківська картка")
