@@ -18,11 +18,11 @@ class Order:
         self.status = new_status
         print(f"Статус замовлення змінено на: {new_status}")
 
-    def show_order(self):
-        print(
-            f"\nЗамовлення №{self.order_id} \n"
-            f"Клієнт: {self.customer.name} {self.customer.surname} \n"
-            f"Сума: {self.total_price} грн \n"
-            f"Статус: {self.status} \n"
-            f"Дата: {self.order_date} \n"
+    def __str__(self) -> str:
+        return (
+            f"\nЗамовлення №{self.order_id}\n"
+            f"Клієнт: {self.customer.name} {self.customer.surname}\n"
+            f"Сума: {self.total_price} грн\n"
+            f"Статус: {self.status}\n"
+            f"Дата: {self.order_date}"
         )
