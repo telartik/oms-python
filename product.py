@@ -1,7 +1,7 @@
 class Product:
     def __init__(self, name: str, price: float, category: str, quantity: int, product_id: int, brand: str):
         self.name = name
-        self._price = price  # Інкапсуляція
+        self._price = price
         self.category = category
         self.quantity = quantity
         self.product_id = product_id
