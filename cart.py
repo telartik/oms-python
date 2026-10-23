@@ -9,7 +9,6 @@ class Cart:
 
     @property
     def total_price(self) -> float:
-        """Динамічний розрахунок загальної суми через @property"""
         return sum(product.price for product in self.products)
 
     def add_product(self, product: Product):
