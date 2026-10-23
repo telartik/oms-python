@@ -4,21 +4,23 @@ class Customer:
         self.surname = surname
         self.phone = phone
         self.address = address
-        self._balance = balance
+        self._balance = balance  # Інкапсуляція балансу
 
     @property
     def balance(self) -> float:
         return self._balance
 
     def withdraw_money(self, amount: float) -> bool:
+        """Безпечне зняття кошти з перевіркою"""
         if self._balance >= amount:
             self._balance -= amount
             return True
         return False
 
-    def show_info(self):
-        print(
-            f"{self.name} {self.surname}\n"
+    def __str__(self) -> str:
+        return (
+            f"Клієнт: {self.name} {self.surname}\n"
             f"Телефон: {self.phone}\n"
-            f"Баланс: {self._balance} грн\n"
+            f"Адреса: {self.address}\n"
+            f"Баланс: {self._balance} грн"
         )
