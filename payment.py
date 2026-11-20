@@ -1,5 +1,6 @@
 from order import Order
 
+
 class Payment:
     def __init__(self, payment_id: int, order: Order, amount: float, method: str):
         self.payment_id = payment_id
@@ -8,13 +9,14 @@ class Payment:
         self.method = method
         self.status = "Очікує оплати"
 
-    def pay(self):
+    def pay(self) -> bool:
         if self.order.customer.withdraw_money(self.amount):
             self.status = "Оплачено"
-            print(f"Замовлення №{self.order.order_id} успішно оплачено")
-        else:
-            self.status = "Не оплачено"
-            print("Недостатньо коштів для оплати")
+            print(f"Замовлення №{self.order.order_id} успішно оплачено ({self.method})")
+            return True
+        self.status = "Не оплачено"
+        print("Недостатньо коштів для оплати")
+        return False
 
     def __str__(self) -> str:
         return (
@@ -23,8 +25,3 @@ class Payment:
             f"Метод: {self.method}\n"
             f"Статус: {self.status}"
         )
-
-
-class CardPayment(Payment):
-    def __init__(self, payment_id: int, order: Order, amount: float):
-        super().__init__(payment_id, order, amount, method="Банківська картка")
