@@ -1,74 +1,94 @@
-from product import Product
+from product import PhysicalProduct, DigitalProduct
 from customer import Customer
 from cart import Cart
 from order import Order
-from payment import CardPayment
+from payment import Payment
 from delivery import Delivery, DeliveryGraph
 
 
 def main():
-    # 1. Створюємо розгалужену карту міста (граф логістики)
     city_map = DeliveryGraph()
-    
-    # Додаємо дороги від головного складу до різних районів міста (з різною відстанню в км)
     city_map.add_edge("Склад", "Центр", 5.0)
     city_map.add_edge("Склад", "Вишенька", 9.2)
     city_map.add_edge("Склад", "Поділля", 6.5)
     city_map.add_edge("Склад", "Замостя", 4.0)
 
-    # 2. Створюємо товари та клієнта
-    product1 = Product("Ноутбук Lenovo", 25000, "Електроніка", 5, 101, "Lenovo")
-    product2 = Product("Мишка Logitech", 800, "Комп'ютерні аксесуари", 20, 102, "Logitech")
+    laptop = PhysicalProduct(
+        name="Ноутбук Lenovo",
+        price=25000,
+        category="Електроніка",
+        product_id=101,
+        brand="Lenovo",
+        stock_quantity=5,
+        weight_kg=1.8,
+    )
+    mouse = PhysicalProduct(
+        name="Мишка Logitech",
+        price=800,
+        category="Аксесуари",
+        product_id=102,
+        brand="Logitech",
+        stock_quantity=20,
+        weight_kg=0.15,
+    )
+    antivirus = DigitalProduct(
+        name="Антивірус Pro (1 рік)",
+        price=1200,
+        category="Програмне забезпечення",
+        product_id=201,
+        brand="Avast",
+        license_key="CG-2026-X9K4-8821",
+        file_size_mb=420.0,
+    )
 
-    # Клієнт живе, наприклад, у районі "Вишенька"
     customer_district = "Вишенька"
     customer1 = Customer(
         "Іван",
         "Ткач",
         "+380971112233",
         f"м. Вінниця, район {customer_district}",
-        30000
+        30000,
     )
 
-    # 3. Робота з кошиком
     cart1 = Cart(1, customer1)
-    cart1.add_product(product1)
-    cart1.add_product(product2)
+    cart1.add_product(laptop)
+    cart1.add_product(mouse)
+    cart1.add_product(antivirus)
+    cart1.remove_product(mouse)
     print(cart1)
 
-    # Видаляємо один товар (перевіряємо динамічний розрахунок суми)
-    cart1.remove_product(product2)
-    print(cart1)
-
-    # 4. Створення замовлення
-    order1 = Order(1, customer1, cart1.products, "08.10.2026")
+    order1 = Order(1, customer1, cart1.products, "19.11.2026")
     order1.calculate_total()
     print(order1)
 
-    # 5. Оплата замовлення
-    payment1 = CardPayment(1, order1, order1.total_price)
-    payment1.pay()
+    payment1 = Payment(1, order1, order1.total_price, method="Картка / Баланс")
+    if payment1.pay():
+        print("\n- Обробка товарів замовлення -")
+        for item in order1.products:
+            print(item.purchase(1))
     print(payment1)
 
-    # 6. Доставка з автоматичним розрахунком через граф
-    delivery1 = Delivery(
-        delivery_id=1,
-        order=order1,
-        destination=customer_district,   пункт призначення тепер збігається з вершиною графа
-        courier="Нова Пошта",
-        city_map=city_map,
-        start_point="Склад"
-    )
-    print(delivery1)  # Тут ціна порахується автоматично: 9.2 км * 15 грн = 138 грн!
+    has_physical_items = any(item.requires_delivery() for item in order1.products)
+    if has_physical_items:
+        delivery1 = Delivery(
+            delivery_id=1,
+            order=order1,
+            destination=customer_district,
+            courier="Нова Пошта",
+            city_map=city_map,
+            start_point="Склад",
+        )
+        print(delivery1)
+        delivery1.start_delivery()
+        order1.change_status("Відправлено")
+        delivery1.complete_delivery()
+    else:
+        order1.change_status("Доставлено (цифровий контент)")
 
-    delivery1.start_delivery()
-    order1.change_status("Відправлено")
-    delivery1.complete_delivery()
-
-    # 7. Вивід інформації через магічний метод __str__
-    print("- Товари -")
-    print(product1)
-    print(product2)
+    print("\n- Усі товари -")
+    for item in (laptop, mouse, antivirus):
+        print(item)
+        print("-" * 30)
 
     print("\n- Клієнт -")
     print(customer1)
